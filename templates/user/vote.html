@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Vote
+{% endblock %}
+
+{% block content %}
+
+<div class="container" >
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow rounded-4 border-0 p-4">
+                <div class="card-body p-4">
+
+                    <div class="float-end ">
+                        <a href="#" class="d-block text-decoration-none " id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{% static 'image/Default_pfp.jpg' %}" alt="Profile" width="30" class="rounded" style="border-radius: 5px;">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end text-center" style="max-width: 100px; padding: 5px;" aria-labelledby="userDropdown">
+                            <li class="dropdown-item-text fw-bold" style="font-size: 14px;">{{ voter.user_fname }}</li>
+                            <li><hr class="dropdown-divider" style="margin: 2px 0;"></li>
+                            <li>
+                                <a href="{% url 'voting_app:login_view' %}" class="dropdown-item text-danger" style="font-size: 14px;">Log out</a>
+                            </li>
+                        </ul>
+                    </div>
+              
+               
+
+                <h2 class="card-title text-center mb-4">Cast Your Vote</h2>
+                <form id="voteForm" action="{% url 'voting_app:vote_process' %}" method="POST">
+                    {% csrf_token %}
+
+                    <h3>President</h3>
+                    {% for candidate in president_candidate %}
+                        <div class="form-check">            
+                            <input class="form-check-input" type="radio" name="president" id="president{{ forloop.counter }}"
+                            value="{{ candidate.id }}" required/>
+                            <label for="president{{ forloop.counter }}" class="form-check-label">                
+                                {{ candidate.name }}
+                            </label>
+                        </div>
+
+                        
+                    {% empty %}
+                    <p>no candidate for president</p>
+
+                    {% endfor %}
+
+                    <hr />
+
+                    <h3>Vice President</h3>
+                    {% for candidate in vice_president_candidate %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="vice_president" id="vp{{ forloop.counter }}" value="{{ candidate.id }}" required/>
+                            <label for="vp{{ forloop.counter }}" class="form-check-label">
+                                {{ candidate.name }}
+                            </label>
+                        </div>
+
+                        
+                    {% empty %}
+                    <p>no candidate for vice president</p>
+
+                    {% endfor %}
+
+                    <hr />
+
+                    <h3>Secretary</h3>
+                    {% for candidate in secretary_candidate %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="secretary" id="secretary{{ forloop.counter }}" value="{{ candidate.id }}" required/>
+                            <label for="secretary{{ forloop.counter }}" class="form-check-label">
+                                {{ candidate.name }}
+                            </label>
+                        </div>
+
+                        
+                    {% empty %}
+                    <p>no candidate for Secretary</p>
+
+                    {% endfor %}
+
+                    <hr />
+
+                    <h3>Treasurer</h3>
+                    {% for candidate in treasurer_candidate %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="treasurer" id="treasurer{{ forloop.counter }}" value="{{ candidate.id }}" required/>
+                            <label for="treasurer{{ forloop.counter }}" class="form-check-label">
+                                {{ candidate.name }}
+                            </label>
+                        </div>
+
+                        
+                    {% empty %}
+                    <p>no candidate for Treasurer</p>
+
+                    {% endfor %}
+
+                    <hr />
+
+                    <h3>Auditor</h3>
+                    {% for candidate in auditor_candidate %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="auditor" id="auditor{{ forloop.counter }}" value="{{ candidate.id }}" required/>
+                            <label for="auditor{{ forloop.counter }}" class="form-check-label">
+                                {{ candidate.name }}
+                            </label>
+                        </div>
+
+                        
+                    {% empty %}
+                    <p>no candidate for Auditor</p>
+
+                    {% endfor %}
+
+                    <hr />
+                    <style>
+                    .form-check-input[type="checkbox"] {
+                        border-radius: 50%;         /* Makes the checkbox round */
+                        width: 1.2em;
+                        height: 1.2em;
+                        border: 2px solid #ccc;
+                    }
+
+                    .form-check-input[type="checkbox"]:checked {
+                        background-color: #0d6efd;  /* Blue when checked */
+                        border-color: #0d6efd;
+                    }
+                    </style>
+
+                    <h3>Public Information Officer</h3>
+                    <p style="color: red">*Vote two candidate*</p>
+                    {% for candidate in pio_candidate %}
+                        <div class="form-check">
+                            <input class="form-check-input pio-checkbox" type="checkbox" name="pio" id="pio{{ forloop.counter }}" value="{{ candidate.id }}" required/>
+                            <label for="pio{{ forloop.counter }}" class="form-check-label">
+                                {{ candidate.name }}
+                            </label>
+                        </div>
+
+                        
+                    {% empty %}
+                    <p>no candidate for PIO</p>
+
+                    {% endfor %}
+
+                    <hr />
+
+                    <h3>Peace Officer</h3>
+                    <p style="color: red">*Vote two candidate*</p>
+                    {% for candidate in po_candidate %}
+                        <div class="form-check">
+                            <input class="form-check-input po-checkbox" type="checkbox" name="po" id="po{{ forloop.counter }}" value="{{ candidate.id }}" required/>
+                            <label for="po{{ forloop.counter }}" class="form-check-label">
+                                {{ candidate.name }}
+                            </label>
+                        </div>
+
+                        
+                    {% empty %}
+                    <p>no candidate for PO</p>
+
+                    {% endfor %}
+
+                    <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        function limitCheckboxSelection(groupClass, maxAllowed, warningMessage) {
+                            const checkboxes = document.querySelectorAll(`.${groupClass}`);
+
+                            checkboxes.forEach(checkbox => {
+                                checkbox.addEventListener('change', function () {
+                                    const checkedBoxes = document.querySelectorAll(`.${groupClass}:checked`);
+                                    if (checkedBoxes.length > maxAllowed) {
+                                        this.checked = false;
+                                        alert(warningMessage);
+                                    }
+                                });
+                            });
+                        }
+
+                        // Limit PIO to 2
+                        limitCheckboxSelection("pio-checkbox", 2, "You can only select up to 2 Public Information Officers.");
+
+                        // Limit PO to 2
+                        limitCheckboxSelection("po-checkbox", 2, "You can only select up to 2 Peace Officers.");
+                    });
+                    </script>
+
+                    <button type="button" class="btn btn-primary mt-3 mb-3" data-bs-toggle="modal" data-bs-target="#confirmationModal">
+                    Review My Vote
+                    </button>
+
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% include 'partials/_modal.html' %}
+
+{% endblock %}

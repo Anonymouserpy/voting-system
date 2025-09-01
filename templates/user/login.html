@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mt-5">    
+        <div class="col-md-8 m-auto">   
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <div class="card shadow rounded-4 border-0">
+                        <div class="card-body p-6">     
+            
+                            {% if error_message %}
+                                <p class="alert alert-danger">            
+                                    <strong>{{ error_message }}</strong>
+                                </p>
+                            {% endif %}
+
+                            <div class="text-center">            
+                                <h1>Login</h1>
+                            </div>
+
+                            <form action="{% url 'voting_app:process_login' %}" method="POST">            
+                                {% csrf_token %}
+
+                                <div class="form-group">                
+                                    <label>Email</label>
+                                    <input type="email" name="email" id="email" class="form-control"
+                                    placeholder="existing@gmail.com" autocomplete="off">                   
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <input type="password" name="password" id="password" class="form-control mb-2"
+                                        placeholder="password">
+                                </div>                   
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-success">Login</button>
+                                </div>
+                                <p class="text-center mt-2 mb-2">Not a registered voter? <a href="{% url 'voting_app:register' %}" >Register here</a></p>
+                                <p class="text-center ">For admin only!! <a href="{% url 'voting_app:admin_view' %}">Admin</a></p>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

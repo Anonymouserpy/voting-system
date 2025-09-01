@@ -1,0 +1,107 @@
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Your Vote</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>President:</strong> <span id="confirm-president"></span></p>
+        <p><strong>Vice President:</strong> <span id="confirm-vp"></span></p>
+        <p><strong>Secretary:</strong> <span id="confirm-secretary"></span></p>
+        <p><strong>Treasurer:</strong> <span id="confirm-treasurer"></span></p>
+        <p><strong>Auditor:</strong> <span id="confirm-auditor"></span></p>
+        <p><strong>PIO:</strong> <span id="confirm-pio"></span></p>
+        <p><strong>Peace Officer:</strong> <span id="confirm-po"></span></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit</button>
+        <button type="button" class="btn btn-success" id="submitVoteBtn" onclick="submitVote()" disabled>Submit Vote</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Existing functions...
+    function getRadioText(name) {
+        const radio = document.querySelector(`input[name="${name}"]:checked`);
+        if (radio) {
+            return document.querySelector(`label[for="${radio.id}"]`).innerText;
+        }
+        return "";
+    }
+
+    function getCheckboxText(name) {
+        const checkboxes = document.querySelectorAll(`input[name="${name}"]:checked`);
+        let labels = [];
+        checkboxes.forEach(cb => {
+            const label = document.querySelector(`label[for="${cb.id}"]`);
+            if (label) labels.push(label.innerText);
+        });
+        return labels.join(', ');
+    }
+
+    function validateSelections() {
+        const isPresidentSelected = document.querySelector('input[name="president"]:checked');
+        const isVPSelected = document.querySelector('input[name="vice_president"]:checked');
+        const isSecretarySelected = document.querySelector('input[name="secretary"]:checked');
+        const isTreasurerSelected = document.querySelector('input[name="treasurer"]:checked');
+        const isAuditorSelected = document.querySelector('input[name="auditor"]:checked');
+        const pioSelected = document.querySelectorAll('input[name="pio"]:checked').length;
+        const poSelected = document.querySelectorAll('input[name="po"]:checked').length;
+
+        const submitBtn = document.getElementById("submitVoteBtn");
+
+        if (
+            isPresidentSelected &&
+            isVPSelected &&
+            isSecretarySelected &&
+            isTreasurerSelected &&
+            isAuditorSelected &&
+            pioSelected === 2 &&
+            poSelected === 2
+        ) {
+            submitBtn.disabled = false;
+        } else {
+            submitBtn.disabled = true;
+        }
+    }
+
+    // Hook into all relevant inputs
+    const allInputs = document.querySelectorAll('input');
+    allInputs.forEach(input => {
+        input.addEventListener('change', validateSelections);
+    });
+
+    // Show selections in modal
+    document.querySelector('[data-bs-target="#confirmationModal"]').addEventListener('click', () => {
+        document.getElementById('confirm-president').innerText = getRadioText("president");
+        document.getElementById('confirm-vp').innerText = getRadioText("vice_president");
+        document.getElementById('confirm-secretary').innerText = getRadioText("secretary");
+        document.getElementById('confirm-treasurer').innerText = getRadioText("treasurer");
+        document.getElementById('confirm-auditor').innerText = getRadioText("auditor");
+        document.getElementById('confirm-pio').innerText = getCheckboxText("pio");
+        document.getElementById('confirm-po').innerText = getCheckboxText("po");
+
+        // Also recheck validation on modal open
+        validateSelections();
+    });
+});
+
+function submitVote() {
+    const pioChecked = document.querySelectorAll('input[name="pio"]:checked');
+    if (pioChecked.length !== 2) {
+        alert("You must select exactly 2 Public Information Officers.");
+        return;
+    }
+
+    const poChecked = document.querySelectorAll('input[name="po"]:checked');
+    if (poChecked.length !== 2) {
+        alert("You must select exactly 2 Peace Officers.");
+        return;
+    }
+
+    document.getElementById("voteForm").submit();
+}
+</script>

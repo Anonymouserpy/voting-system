@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Result
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow rounded-4 border-0">
+            <div class="card-body p-auto">
+                <div class="float-end mb-10">
+                    <a href="#" class="d-block text-decoration-none " id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{% static 'image/Default_pfp.jpg' %}" alt="Profile" width="30" class="rounded" style="border-radius: 10px;">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end text-center" style="max-width: 100px; padding: 5px;" aria-labelledby="userDropdown">
+                        <li class="dropdown-item-text fw-bold" style="font-size: 14px">{{ request.user.username }}</li>
+                        <li><hr class="dropdown-divider" style="margin: 2px 0;"></li>
+                        <li>
+                            <a href="{% url 'voting_app:login_view' %}" class="dropdown-item text-danger" style="font-size: 14px">Log out</a>
+                        </li>
+                    </ul>
+                </div>
+              
+                <div class="clearfix"></div> 
+                <div class="mt-2">{% include 'partials/_navbar.html' %}</div>
+
+                <h1 class="text-center ">Result</h1>
+                <div class="container">
+                    
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <h3>President</h3>
+                            <thead>
+                                <tr>
+                                    <th>Candidates</th>
+                                    <th>Votes</th>
+                                </tr>
+                            </thead>
+                            <tbody> 
+                                {% for candidate in president_candidate %}           
+                                <tr>
+                                    <td>{{ candidate.name }}</td>
+                                    <td>{{ candidate.vote_count }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <h3>Vice President</h3>
+                            <thead>
+                                <tr>
+                                    <th>Candidates</th>
+                                    <th>Votes</th>
+                                </tr>
+                            </thead>
+                            <tbody>            
+                            {% for candidate in vice_president_candidate %}
+                                <tr>
+                                    <td>{{ candidate.name }}</td>
+                                    <td>{{ candidate.vote_count }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <h3>Secretary</h3>
+                            <thead>
+                                <tr>
+                                    <th>Candidates</th>
+                                    <th>Votes</th>
+                                </tr>
+                            </thead>
+                            <tbody>       
+                            {% for candidate in secretary_candidate %}     
+                                <tr>
+                                    <td>{{ candidate.name }}</td>
+                                    <td>{{ candidate.vote_count }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <h3>Treasurer</h3>
+                            <thead>
+                                <tr>
+                                    <th>Candidates</th>
+                                    <th>Votes</th>
+                                </tr>
+                            </thead>
+                            <tbody>            
+                            {% for candidate in treasurer_candidate %}
+                                <tr>
+                                    <td>{{ candidate.name }}</td>
+                                    <td>{{ candidate.vote_count }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <h3>Auditor</h3>
+                            <thead>
+                                <tr>
+                                    <th>Candidates</th>
+                                    <th>Votes</th>
+                                </tr>
+                            </thead>
+                            <tbody>            
+                            {% for candidate in auditor_candidate %}
+                                <tr>
+                                    <td>{{ candidate.name }}</td>
+                                    <td>{{ candidate.vote_count }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <h3>Public Information Officer</h3>
+                            <thead>
+                                <tr>
+                                    <th>Candidates</th>
+                                    <th>Votes</th>
+                                </tr>
+                            </thead>
+                            <tbody>            
+                            {% for candidate in public_information_officer_candidate  %}
+                                <tr>
+                                    <td>{{ candidate.name }}</td>
+                                    <td>{{ candidate.vote_count }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <h3>Peace Officer</h3>
+                            <thead>
+                                <tr>
+                                    <th>Candidates</th>
+                                    <th>Votes</th>
+                                </tr>
+                            </thead>
+                            <tbody>            
+                            {% for candidate in peace_officer_candidate  %}
+                                <tr>
+                                    <td>{{ candidate.name }}</td>
+                                    <td>{{ candidate.vote_count }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
